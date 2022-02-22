@@ -1,0 +1,8 @@
+{% extends 'main/base.html' %}
+{% block title %}View{% endblock %}
+
+{% block content %}
+    {% for task in tasks %}
+        <p><a href="/tasks/{{task.id}}">{{task.text}}</a> - {{task.price}}</p>
+    {% endfor %}
+{% endblock %}

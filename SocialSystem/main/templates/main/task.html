@@ -1,0 +1,26 @@
+{% extends "main/base.html" %}
+{% block title %}View List{% endblock %}
+
+{% block content %}
+	<h1>{{ls.text}}</h1>
+	<p>{{ls.price}}</p>
+	{% if not taken and not org %}
+		<form method="post" action="#">
+			{% csrf_token %}
+			<button type="submit" name="take" value="take" class="btn btn-success">Take</button>
+		</form>
+	{% elif taken %}
+		<p>Taken by {{ls.user}}</p>
+	{% endif %}
+	{% if org and ls.user %}
+		<form method="post" action="#">
+			{% csrf_token %}
+			<button type="submit" name="revoke" value="revoke" class="btn btn-danger">Revoke</button>
+			{% if ls.complete %}
+				<button type="submit" name="uncomplete" value="uncomplete" class="btn btn-warning">Uncomplete</button>
+			{% else %}
+				<button type="submit" name="complete" value="complete" class="btn btn-success">Complete</button>
+			{% endif %}
+		</form>
+	{% endif %}
+{% endblock %}
