@@ -57,7 +57,7 @@ def task(response, id):
 @login_required(login_url='login')
 def create(response):
     if response.method == "POST":
-        form = CreateNewList(response.POST)
+        form = CreateNewList(response.POST, response.FILES)
 
         if form.is_valid():
             name = form.cleaned_data["name"]
@@ -67,7 +67,7 @@ def create(response):
             image = form.cleaned_data["image"]
             limit = form.cleaned_data["limit"]
             award = form.cleaned_data["award"]
-            t = Task(name=name, award=award, description=description,
+            t = Task(organization=response.user, name=name, award=award, description=description,
                      beginning=beginning, geocode=geocode, limiter=limit, photo=image)
             t.save()
             response.user.task.add(t)

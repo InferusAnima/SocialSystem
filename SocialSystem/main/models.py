@@ -9,12 +9,11 @@ def user_directory_path(instance, filename):
 
 
 class Task(models.Model):
-    id = models.IntegerField(auto_created=True, primary_key=True, serialize=False, verbose_name='id')
     organization = models.ForeignKey(User, on_delete=models.CASCADE, related_name="task", null=True)
     user = models.ManyToManyField(User, related_name="user", null=True, blank=True)
     name = models.CharField(max_length=128)
     beginning = models.DateTimeField(default=timezone.now, null=True)
-    photo = models.ImageField(upload_to=user_directory_path, verbose_name="Фото", null=True)
+    photo = models.ImageField(upload_to=user_directory_path, null=True)
     geocode = models.CharField(max_length=128)
     description = models.CharField(max_length=1024)
     award = models.IntegerField(default=0)
