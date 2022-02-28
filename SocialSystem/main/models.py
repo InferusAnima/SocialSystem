@@ -5,7 +5,11 @@ from django.urls import reverse
 
 
 def user_directory_path(instance, filename):
-    return 'user_{0}/%Y/%m/%d/{1}'.format(1, filename)
+    return 'users/{0}'.format(filename)
+
+
+def task_directory_path(instance, filename):
+    return 'tasks/{0}'.format(filename)
 
 
 class Task(models.Model):
@@ -33,4 +37,4 @@ class Profile(models.Model):
     location = models.CharField(max_length=30, blank=True)
     points = models.IntegerField(default=0)
     about = models.CharField(max_length=256, blank=True)
-    photo = models.ImageField(upload_to=user_directory_path, verbose_name="Фото", null=True)
+    photo = models.ImageField(upload_to=task_directory_path, verbose_name="Фото", null=True)
