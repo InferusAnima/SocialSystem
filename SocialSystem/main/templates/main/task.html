@@ -2,8 +2,11 @@
 {% block title %}View List{% endblock %}
 
 {% block content %}
-	<h1>{{ls.text}}</h1>
-	<p>{{ls.price}}</p>
+	<h1>{{ls.name}}</h1>
+	<p>Описание : {{ls.description}}</p>
+	<p>Начало : {{ls.beginning}}</p>
+	<p>Место : {{ls.geocode}}</p>
+	<p>Награда : {{ls.award}}</p>
 	{% if not taken and not org %}
 		<form method="post" action="#">
 			{% csrf_token %}

@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import Task, Points
+from .models import Task, Profile
 
 # Register your models here.
 admin.site.register(Task)
-admin.site.register(Points)
+admin.site.register(Profile)

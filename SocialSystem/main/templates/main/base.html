@@ -7,30 +7,31 @@
 			z-index:1;
 			top:0;
 			left:0;
-			background-color:#901111;
+			background-color:#FFFFFF;
 			overflow-x: :hidden;
 			padding-top:20px;
 		}
 
 		.nav-item a {
 			padding:6px 8px 6px 16px;
-			text-decoration: none;
 			font-size:25px;
-			color: #818181;
-			display:block;
+			color: #666666;
 		}
 
-		.nav a:hover{
-			color:#f1f1f1;
+		.navbar-brand {
+			padding:6px 8px 6px 16px;
+			font-size:40px;
+			color: #AAAAAA;
+		}
+
+		.a {
+            color: #F000FF;
 		}
 
 		.main{
 			margin-left:160px;
 			padding: 0px 10px;
 		}
-
-
-
 
     </style>
 
@@ -44,30 +45,27 @@
 </head>
 
 <body>
-<nav class="navbar navbar-light navbar-expand-md fixed-top">
+<nav class="navbar bg-dark navbar-expand-md fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">SocialSystem</a>
+        <a class="navbar-brand" href="/">SocialSystem</a>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Home</a>
-                </li>
                 {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link" href="/create">Create</a>
+                    <a class="nav-link active" aria-current="page" href="/user_info/{{user.id}}">{{user.last_name}} {{user.first_name}}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/tasks">Tasks</a>
+                    <a class="nav-link" href="/tasks">Вакансии</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/logout">Logout</a>
+                    <a class="nav-link" href="/logout">Выйти</a>
                 </li>
                 {% else %}
                 <li class="nav-item">
-                    <a class="nav-link" href="/login">Login</a>
+                    <a class="nav-link" href="/login">Войти</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/register">Register</a>
+                    <a class="nav-link" href="/register">Зарегистрироваться</a>
                 </li>
                 {% endif %}
             </ul>

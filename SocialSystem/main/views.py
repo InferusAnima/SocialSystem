@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
-from .models import Task
+from .models import Task, User
 from .forms import CreateNewList
 from .decorators import allowed_users
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
 
 
 def home(response):
@@ -12,8 +13,10 @@ def home(response):
 
 @login_required(login_url='login')
 def tasks(response):
-    tasks = list(filter(lambda x: not x.user, Task.objects.all()))
-    return render(response, "main/tasks.html", {"tasks": tasks})
+    tasks = list(Task.objects.all())
+    User.objects.get(id=response.user.id)
+    org = response.user.groups.all()[0].name == 'organization'
+    return render(response, "main/tasks.html", {"tasks": tasks, 'org': org})
 
 
 @login_required(login_url='login')
@@ -52,15 +55,20 @@ def task(response, id):
 
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['organization'])
 def create(response):
     if response.method == "POST":
         form = CreateNewList(response.POST)
 
         if form.is_valid():
-            text = form.cleaned_data["text"]
-            price = form.cleaned_data["price"]
-            t = Task(text=text, price=price)
+            name = form.cleaned_data["name"]
+            description = form.cleaned_data["description"]
+            beginning = form.cleaned_data["beginning"]
+            geocode = form.cleaned_data["geocode"]
+            image = form.cleaned_data["image"]
+            limit = form.cleaned_data["limit"]
+            award = form.cleaned_data["award"]
+            t = Task(name=name, award=award, description=description,
+                     beginning=beginning, geocode=geocode, limiter=limit, photo=image)
             t.save()
             response.user.task.add(t)
 
@@ -70,3 +78,16 @@ def create(response):
         form = CreateNewList()
 
     return render(response, "main/create.html", {"form": form})
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['organization'])
+def control(response, id):
+    tasks = list(filter(lambda x: x.user and x.organization.id == id, Task.objects.all()))
+    return render(response, "main/control.html", {"tasks": tasks})
+
+
+@login_required(login_url='login')
+def user_info(response, id):
+    user = User.objects.get(id=id)
+    return render(response, "main/user_info.html", {"c_user": user})
