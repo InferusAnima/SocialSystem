@@ -68,13 +68,6 @@ def create(response):
 
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['organization'])
-def control(response, id):
-    tasks = list(filter(lambda x: x.user and x.organization.id == id, Task.objects.all()))
-    return render(response, "main/control.html", {"tasks": tasks})
-
-
-@login_required(login_url='login')
 def user_info(response, id):
     user = User.objects.get(id=id)
     return render(response, "main/user_info.html", {"c_user": user})
