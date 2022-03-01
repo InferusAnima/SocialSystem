@@ -1,0 +1,29 @@
+{% extends "main/base.html" %}
+{% block title %}Льготы{% endblock %}
+
+{% block content %}
+<div class="album py-5">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            {% for benefit in benefits %}
+            <div class="col">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <p class="card-text"><strong>{{benefit.name}} : </strong>{{benefit.description}}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="btn-group">
+                                <form method="post" action="">
+                                    {% csrf_token %}
+                                    <button type="submit" name="buy" value="{{user.id}} {{benefit.id}}" class="btn btn-sm btn-outline-secondary">Приобрести</button>
+                                </form>
+                            </div>
+                            <small class="text-muted">{{benefit.cost}} баллов</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

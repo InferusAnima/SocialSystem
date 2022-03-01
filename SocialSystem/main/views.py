@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
-from .models import Task, User
+from .models import *
+from django.contrib.auth.models import User
 from .forms import CreateNewList
 from .decorators import allowed_users
 from django.contrib.auth.decorators import login_required
@@ -25,7 +26,7 @@ def task(response, id):
     can_take = response.user.id not in [i.id for i in task.user.all()] and len(list(task.user.all())) <= task.limiter and not task.complete
     if response.method == "POST":
         if response.POST.get("take"):
-            task.user.add(response.POST.get("take"))  # set
+            task.user.add(response.POST.get("take"))
             task.save()
         elif response.POST.get("kick"):
             task.user.remove(response.POST.get("kick"))
@@ -41,6 +42,7 @@ def task(response, id):
     return render(response, "main/task.html", {"task": task, "org": org, "can_take": can_take})
 
 
+@allowed_users(allowed_roles=['organization'])
 @login_required(login_url='login')
 def create(response):
     if response.method == "POST":
@@ -67,7 +69,24 @@ def create(response):
     return render(response, "main/create.html", {"form": form})
 
 
-@login_required(login_url='login')
 def user_info(response, id):
     user = User.objects.get(id=id)
     return render(response, "main/user_info.html", {"c_user": user})
+
+
+@allowed_users(allowed_roles=['user'])
+@login_required(login_url='login')
+def store(response):
+    benefits = Benefit.objects.all()
+    if response.method == "POST":
+        if response.POST.get("buy"):
+            benefit_id = response.POST.get("buy").split()[1]
+            user_id = response.POST.get("buy").split()[0]
+            user = User.objects.get(id=user_id)
+            benefit = Benefit.objects.get(id=benefit_id)
+            if user.profile.points >= benefit.cost:
+                user.profile.benefits.add(benefit_id)
+                user.profile.points -= benefit.cost
+                user.profile.save()
+        return redirect('main/store.html')
+    return render(response, "main/store.html", {'benefits': benefits})

@@ -7,4 +7,5 @@ urlpatterns = [
     path("tasks/<int:id>", views.task, name="task"),
     path("tasks/", views.tasks, name="tasks"),
     path("user_info/<int:id>", views.user_info, name="user_info"),
+    path("store/", views.store, name="store"),
 ]
