@@ -107,5 +107,5 @@ def store(response):
                 user.profile.benefits.add(benefit_id)
                 user.profile.points -= benefit.cost
                 user.profile.save()
-        return redirect('main/store.html')
+        return redirect('/store')
     return render(response, "main/store.html", {'benefits': benefits})
