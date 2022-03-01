@@ -1,6 +1,29 @@
 {% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-{{id}}
-{{c_user}}
+<h1>{{c_user.last_name}} {{c_user.first_name}}</h1>
+{% if c_user.photo %}
+<img src="{{c_user.photo.url}}" width="300" height="300">
+{% else %}
+<svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="300" height="300"
+     xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500"
+     preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
+    <rect width="100%" height="100%" fill="#eee"></rect>
+    <text x="40%" y="49%" fill="#aaa" dy=".3em">300x300</text>
+</svg>
+{% endif %}
+<p><strong>О себе : </strong>{{c_user.profile.about}}</p>
+<p><strong>Номер телефона : </strong>{{c_user.profile.phone}}</p>
+<p><strong>Геоточка : </strong> <img src="https://static-maps.yandex.ru/1.x/?ll=37.677751,55.757718&spn=0.016457,0.00619&l=map"></p>
+{% if c_user.id == user.id %}
+<p><a href="/store">Мои льготы</a></p>
+<div class="col-7 themed-grid-col">
+    <form method="post" enctype="multipart/form-data" class="form-group">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" name="all" value="0" class="btn btn-warning">Изменить</button>
+    </form>
+</div>
+{% endif %}
 {% endblock %}

@@ -9,3 +9,11 @@ class CreateNewList(forms.Form):
     image = forms.ImageField(required=False, label='Фото')
     limit = forms.IntegerField(label="Лимит участников")
     award = forms.IntegerField(label="Вознаграждение")
+
+
+class EditProfile(forms.Form):
+    image = forms.ImageField(required=False, label='Фото')
+    geocode = forms.CharField(required=False, label='Геокод', max_length=128)
+    phone = forms.CharField(required=False, label='Телефон', max_length=16)
+    about = forms.CharField(widget=forms.Textarea(), required=False, label='О себе', max_length=256)
+

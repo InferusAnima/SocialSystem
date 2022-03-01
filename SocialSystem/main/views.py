@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from .models import *
 from django.contrib.auth.models import User
-from .forms import CreateNewList
+from .forms import CreateNewList, EditProfile
 from .decorators import allowed_users
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
@@ -24,6 +24,7 @@ def task(response, id):
     task = Task.objects.get(id=id)
     org = response.user.groups.all()[0].name == 'organization'
     can_take = response.user.id not in [i.id for i in task.user.all()] and len(list(task.user.all())) <= task.limiter and not task.complete
+    geopoint = f'https://static-maps.yandex.ru/1.x/?ll={task.geocode.split()[1], task.geocode.split()[0]}8&spn=0.5,0.00619&l=map'
     if response.method == "POST":
         if response.POST.get("take"):
             task.user.add(response.POST.get("take"))
@@ -39,7 +40,7 @@ def task(response, id):
             task.delete()
             return redirect('/tasks')
         return redirect(f'/tasks/{id}')
-    return render(response, "main/task.html", {"task": task, "org": org, "can_take": can_take})
+    return render(response, "main/task.html", {"task": task, "org": org, "can_take": can_take, 'geopoint': geopoint})
 
 
 @allowed_users(allowed_roles=['organization'])
@@ -71,7 +72,25 @@ def create(response):
 
 def user_info(response, id):
     user = User.objects.get(id=id)
-    return render(response, "main/user_info.html", {"c_user": user})
+    if response.method == "POST":
+        form = EditProfile(response.POST, response.FILES)
+        if form.is_valid():
+            image = form.cleaned_data["image"]
+            geocode = form.cleaned_data["geocode"]
+            phone = form.cleaned_data["phone"]
+            about = form.cleaned_data["about"]
+            if image:
+                user.profile.photo = image
+            if phone:
+                user.profile.phone = phone
+            if geocode:
+                user.profile.geocode = geocode
+            if about:
+                user.profile.about = about
+            user.profile.save()
+    else:
+        form = EditProfile()
+    return render(response, "main/user_info.html", {"c_user": user, "form": form})
 
 
 @allowed_users(allowed_roles=['user'])
