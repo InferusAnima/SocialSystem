@@ -2,28 +2,45 @@
 {% block title %}View List{% endblock %}
 
 {% block content %}
-	<h1>{{ls.name}}</h1>
-	<p>Описание : {{ls.description}}</p>
-	<p>Начало : {{ls.beginning}}</p>
-	<p>Место : {{ls.geocode}}</p>
-	<p>Награда : {{ls.award}}</p>
-	{% if not taken and not org %}
-		<form method="post" action="#">
-			{% csrf_token %}
-			<button type="submit" name="take" value="take" class="btn btn-success">Take</button>
-		</form>
-	{% elif taken %}
-		<p>Taken by {{ls.user}}</p>
-	{% endif %}
-	{% if org and ls.user %}
-		<form method="post" action="#">
-			{% csrf_token %}
-			<button type="submit" name="revoke" value="revoke" class="btn btn-danger">Revoke</button>
-			{% if ls.complete %}
-				<button type="submit" name="uncomplete" value="uncomplete" class="btn btn-warning">Uncomplete</button>
-			{% else %}
-				<button type="submit" name="complete" value="complete" class="btn btn-success">Complete</button>
-			{% endif %}
-		</form>
-	{% endif %}
+<h1>{{task.organization.last_name}} {{task.organization.first_name}}</h1>
+<h2>{{task.name}}</h2>
+{% if task.photo %}
+<img src="{{task.photo.url}}" width="750" height="500">
+{% else %}
+<svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500"
+     xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500"
+     preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
+    <rect width="100%" height="100%" fill="#eee"></rect>
+    <text x="50%" y="50%" fill="#aaa" dy=".3em">500x500</text>
+</svg>
+{% endif %}
+<p><strong>Описание : </strong>{{task.description}}</p>
+<p><strong>Геокод : </strong>{{task.geocode}}</p>
+<p><strong>Время начала : </strong>{{task.beginning}}</p>
+<p><strong>Вознаграждение : </strong>{{task.award}}</p>
+{% if org %}
+{% for person in task.user.all %}
+<div class="row mb-2">
+    <div class="col-1 themed-grid-col"><a href="/user_info/{{person.id}}">{{person.last_name}} {{person.first_name}}</a>
+    </div>
+    <div class="col-1 themed-grid-col">
+        <form method="post" action="">
+            {% csrf_token %}
+            <button type="submit" name="kick" value="{{person.id}}" class="btn btn-danger">Отстранить</button>
+        </form>
+    </div>
+</div>
+{% endfor %}
+<form method="post" action="">
+    {% csrf_token %}
+    <button type="submit" name="complete" value="0" class="btn btn-success">Завершить</button>
+</form>
+{% else %}
+{% if can_take %}
+<form method="post" action="">
+    {% csrf_token %}
+    <button type="submit" name="take" value="{{user.id}}" class="btn btn-success">Take</button>
+</form>
+{% endif %}
+{% endif %}
 {% endblock %}

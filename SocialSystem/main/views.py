@@ -14,44 +14,31 @@ def home(response):
 @login_required(login_url='login')
 def tasks(response):
     tasks = list(Task.objects.all())
-    User.objects.get(id=response.user.id)
     org = response.user.groups.all()[0].name == 'organization'
     return render(response, "main/tasks.html", {"tasks": tasks, 'org': org})
 
 
 @login_required(login_url='login')
 def task(response, id):
-    ls = Task.objects.get(id=id)
-    if not ls.user and response.user != ls.organization:
-        if response.method == "POST":
-            if response.POST.get("take"):
-                ls.user = response.user
-                ls.save()
-            return redirect(f'/tasks/{id}')
-
-        return render(response, "main/task.html", {"ls": ls, "taken": False, "org": False})
-    elif ls.user and response.user == ls.organization:
-        if response.method == "POST":
-            if response.POST.get("revoke"):
-                ls.user = None
-                ls.save()
-            elif response.POST.get("complete"):
-                ls.complete = True
-                ls.user.points.points += ls.price
-                ls.user.points.save()
-                ls.save()
-            elif response.POST.get("uncomplete"):
-                ls.complete = False
-                ls.user.points.points -= ls.price
-                ls.user.points.save()
-                ls.save()
-            return redirect(f'/tasks/{id}')
-
-        return render(response, "main/task.html", {"ls": ls, "taken": True, "org": True})
-    elif response.user == ls.organization:
-        return render(response, "main/task.html", {"ls": ls, "taken": False, "org": True})
-    else:
-        return render(response, "main/task.html", {"ls": ls, "taken": True, "org": False})
+    task = Task.objects.get(id=id)
+    org = response.user.groups.all()[0].name == 'organization'
+    can_take = response.user.id not in [i.id for i in task.user.all()] and len(list(task.user.all())) <= task.limiter and not task.complete
+    if response.method == "POST":
+        if response.POST.get("take"):
+            task.user.add(response.POST.get("take"))  # set
+            task.save()
+        elif response.POST.get("kick"):
+            task.user.remove(response.POST.get("kick"))
+        elif response.POST.get("complete"):
+            task.complete = True
+            task.save()
+            for person in task.user.all():
+                person.profile.points += task.award
+                person.profile.save()
+            task.delete()
+            return redirect('/tasks')
+        return redirect(f'/tasks/{id}')
+    return render(response, "main/task.html", {"task": task, "org": org, "can_take": can_take})
 
 
 @login_required(login_url='login')
