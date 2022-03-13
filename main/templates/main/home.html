@@ -1,34 +1,29 @@
 {% extends 'main/base.html' %}
 {% load static %}
 
-{% block title %}
-Home
-{% endblock %}
-
-
 {% block content %}
 {% load static %}
 <main class="container">
     <div class="p-4 p-md-5 mb-4 text-white rounded bg-dark">
         <div class="col-md-6 px-0">
-            <h1 class="display-5 fst-italic">Title of a longer featured blog post</h1>
-            <p class="lead my-3">Multiple lines of text that form the lede, informing new readers quickly and
-                efficiently about what’s most interesting in this post’s contents.</p>
-            <p class="lead mb-0"><a href="#" class="text-white fw-bold">Continue reading...</a></p>
+            <h1 class="display-5 fst-italic">Ремарка от разработчиков:</h1>
+            <p class="lead my-3">Медиа-файлы взяты с открытых ресурсов сети интернет,
+                а компании и вакансии вымышлены и являются примером</p>
+            <p class="lead mb-0"><a href="" class="text-white fw-bold">Спасибо за понимание</a></p>
         </div>
     </div>
     <div class="row g-5">
         <div class="col">
-            <h3 class="pb-4 mb-4 fst-italic border-bottom">
-                Описание
-            </h3>
+            <h2 class="pb-4 mb-4 border-bottom">Визитка</h2>
 
             <article class="blog-post">
-                <h2 class="blog-post-title">Волонтерская деятельность</h2>
-
-                <p>"Проект поддержки волонтеров" на улучшение организованности и положения волонтеров</p>
+                <h4 class="blog-post-title">Мы предоставляем:</h4>
+                <p><strong>Волонтерам: </strong> Удобную площадку реализации своей деятельности, льготы</p>
+                <p><strong>Организациям: </strong>Заинтерисованных волонтеров и платформу для их организации</p>
                 <hr>
-                <p>$Вставить плюсы$</p>
+                <h4 class="blog-post-title">Результаты:</h4>
+                <p>Мы создали удобную платформу взаимодействия государства,
+                    волонтерских организаций и добровольцев с целью стимулировать добровольческое движение в России.</p>
                 <img src="{% static 'pages/home_1.jpg' %}" height="100%" width="100%">
             </article>
         </div>

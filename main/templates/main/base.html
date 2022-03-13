@@ -25,14 +25,14 @@
 		}
 		.navbar-brand {
                 padding: 6px 8px 6px 16px;
-                font-size:10px;
-                color: #AAAAAA;
+                font-size:60px;
+                color: #AAAAFF;
 		    }
 
 		@media screen and (min-width:200px) and (max-width:500px) {
             .navbar-brand {
                 color: #FFFFFF;
-                font-size:5px;
+                font-size:2px;
                 padding: 0px;
 		    }
         }
@@ -53,7 +53,7 @@
     <header class="d-flex align-items-center pb-3 mb-5 border-bottom">
         <nav class="navbar bg-dark navbar-expand fixed-top">
             <div class="container-fluid">
-                <a class="navbar-brand" href="/">Проект поддержки волонтеров</a>
+                <a class="navbar-brand" href="/">Главная</a>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav me-auto mb-2 mb-md-0">
                         {% if user.is_authenticated %}
