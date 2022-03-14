@@ -24,7 +24,6 @@ def task(response, id):
     task = Task.objects.get(id=id)
     org = response.user.groups.all()[0].name == 'organization'
     can_take = response.user.id not in [i.id for i in task.user.all()] and len(list(task.user.all())) <= task.limiter and not task.complete
-    geopoint = f'https://static-maps.yandex.ru/1.x/?ll={task.geocode.split()[1], task.geocode.split()[0]}8&spn=0.5,0.00619&l=map'
     if response.method == "POST":
         if response.POST.get("take"):
             task.user.add(response.POST.get("take"))
@@ -40,7 +39,7 @@ def task(response, id):
             task.delete()
             return redirect('/tasks')
         return redirect(f'/tasks/{id}')
-    return render(response, "main/task.html", {"task": task, "org": org, "can_take": can_take, 'geopoint': geopoint})
+    return render(response, "main/task.html", {"task": task, "org": org, "can_take": can_take})
 
 
 @allowed_users(allowed_roles=['organization'])
