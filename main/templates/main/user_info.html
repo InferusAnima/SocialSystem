@@ -3,8 +3,8 @@
 
 {% block content %}
 <h1>{{c_user.last_name}} {{c_user.first_name}}</h1>
-{% if c_user.photo %}
-<img src="{{c_user.photo.url}}" width="300" height="300">
+{% if c_user.profile.photo %}
+<img src="{{c_user.profile.photo.url}}" width="300" height="300">
 {% else %}
 <svg class="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="300" height="300"
      xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500"
