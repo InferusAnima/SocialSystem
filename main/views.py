@@ -71,6 +71,7 @@ def create(response):
 
 def user_info(response, id):
     user = User.objects.get(id=id)
+    print(user.profile.benefits)
     if response.method == "POST":
         form = EditProfile(response.POST, response.FILES)
         if form.is_valid():
@@ -89,7 +90,7 @@ def user_info(response, id):
             user.profile.save()
     else:
         form = EditProfile()
-    return render(response, "main/user_info.html", {"c_user": user, "form": form})
+    return render(response, "main/user_info.html", {"c_user": user, "form": form, "benefits": user.profile.benefits.all()})
 
 
 @allowed_users(allowed_roles=['user'])
