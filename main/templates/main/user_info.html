@@ -19,6 +19,23 @@
                 {% endif %}
             </div>
         </div>
+        <div class="card text-white bg-dark mb-3">
+            <div class="card-header text-center">
+                <h5 class="card-title">Активные вакансии</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for task in tasks %}
+                <li class="list-group-item">
+                    <p><strong><a href="/tasks/{{task.id}}">{{task.name}}</a></strong> {{task.award}} баллов</p>
+                    <p>{{task.description}}</p>
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        <button type="submit" name="left" value="{{task.id}}" class="btn btn-danger">Покинуть вакансию</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
     <div class="col">
         <div class="card text-white bg-dark mb-3" style="width: 24rem;">
@@ -31,10 +48,9 @@
                 <li class="list-group-item"><p><strong>Геоточка : </strong>WIP</p></li>
             </ul>
         </div>
-
         {% if c_user.id == user.id %}
         <hr>
-        <div class="card text-white bg-dark mb-3" style="width: 24rem;">
+        <div class="card text-white bg-dark mb-3">
             <div class="card-header text-center">
                 <h5 class="card-title">Мои льготы</h5>
             </div>

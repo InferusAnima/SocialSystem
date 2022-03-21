@@ -46,6 +46,7 @@ def task(response, id):
 @login_required(login_url='login')
 def create(response):
     if response.method == "POST":
+
         form = CreateNewList(response.POST, response.FILES)
 
         if form.is_valid():
@@ -60,19 +61,19 @@ def create(response):
                      beginning=beginning, geocode=geocode, limiter=limit, photo=image)
             t.save()
             response.user.task.add(t)
-
             return HttpResponseRedirect(f"/tasks/{t.id}")
-
     else:
         form = CreateNewList()
-
     return render(response, "main/create.html", {"form": form})
 
 
 def user_info(response, id):
     user = User.objects.get(id=id)
-    print(user.profile.benefits)
+    tasks = Task.objects.filter(user__id=id)
     if response.method == "POST":
+        if response.POST.get("left"):
+            task = Task.objects.get(id=response.POST.get("left"))
+            task.user.remove(id)
         form = EditProfile(response.POST, response.FILES)
         if form.is_valid():
             image = form.cleaned_data["image"]
@@ -88,9 +89,10 @@ def user_info(response, id):
             if about:
                 user.profile.about = about
             user.profile.save()
+        return redirect(f'/user_info/{id}')
     else:
         form = EditProfile()
-    return render(response, "main/user_info.html", {"c_user": user, "form": form, "benefits": user.profile.benefits.all()})
+    return render(response, "main/user_info.html", {"c_user": user, "form": form, "benefits": user.profile.benefits.all(), "tasks": tasks})
 
 
 @allowed_users(allowed_roles=['user'])

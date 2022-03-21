@@ -7,52 +7,55 @@
         <div class="card-header text-white bg-dark text-center">
             <h5 class="card-title">Доступные вакансии</h5>
         </div>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-3">
-            {% for task in tasks %}
-            <div class="col">
-                <div class="card shadow-sm">
-                    {% if task.photo %}
-                    <img src="{{task.photo.url}}" height="225" width="100%">
-                    {% else %}
-                    <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                         xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                         preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
-                        <rect width="100%" height="100%" fill="#99595c"></rect>
-                    </svg>
-                    {% endif %}
-                    <div class="card-body">
-                        <p class="card-text"><strong>{{task.name}} :</strong> {{task.description}}</p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <a class="btn btn-sm btn-secondary" href="/tasks/{{task.id}}" role="button">Взять</a>
-                                <a class="btn btn-sm btn-outline-secondary" href="/tasks/{{task.id}}" role="button">Подробнее</a>
+        <div class="card-body">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-3">
+                {% for task in tasks %}
+                <div class="col">
+                    <div class="card shadow-sm">
+                        {% if task.photo %}
+                        <img src="{{task.photo.url}}" height="225" width="100%">
+                        {% else %}
+                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                             xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                             preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#99595c"></rect>
+                        </svg>
+                        {% endif %}
+                        <div class="card-body">
+                            <p class="card-text"><strong>{{task.name}} :</strong> {{task.description}}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a class="btn btn-sm btn-secondary" href="/tasks/{{task.id}}"
+                                       role="button">Взять</a>
+                                    <a class="btn btn-sm btn-outline-secondary" href="/tasks/{{task.id}}" role="button">Подробнее</a>
+                                </div>
+                                <small class="text-muted">{{task.beginning}}</small>
                             </div>
-                            <small class="text-muted">{{task.beginning}}</small>
                         </div>
                     </div>
                 </div>
-            </div>
-            {% endfor %}
-            {% if org %}
-            <div class="col">
-                <div class="card shadow-sm">
-                    <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                         xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                         preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
-                        <rect width="100%" height="100%" fill="#59995c"></rect>
-                    </svg>
-                    <div class="card-body">
-                        <p class="card-text"><strong>Добавить вакансию</strong></p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <a class="btn btn-sm btn-secondary" href="/create" role="button">+</a>
+                {% endfor %}
+                {% if org %}
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                             xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                             preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#59995c"></rect>
+                        </svg>
+                        <div class="card-body">
+                            <p class="card-text"><strong>Добавить вакансию</strong></p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="btn-group">
+                                    <a class="btn btn-sm btn-secondary" href="/create" role="button">+</a>
+                                </div>
+                                <small class="text-muted">{{task.beginning}}</small>
                             </div>
-                            <small class="text-muted">{{task.beginning}}</small>
                         </div>
                     </div>
                 </div>
+                {% endif %}
             </div>
-            {% endif %}
         </div>
     </div>
 </div>
