@@ -28,10 +28,13 @@
                 <li class="list-group-item">
                     <p><strong><a href="/tasks/{{task.id}}">{{task.name}}</a></strong> {{task.award}} баллов</p>
                     <p>{{task.description}}</p>
+                    {% if c_user.id == user.id %}
                     <form method="post" action="">
                         {% csrf_token %}
-                        <button type="submit" name="left" value="{{task.id}}" class="btn btn-danger">Покинуть вакансию</button>
+                        <button type="submit" name="left" value="{{task.id}}" class="btn btn-danger">Покинуть вакансию
+                        </button>
                     </form>
+                    {% endif %}
                 </li>
                 {% endfor %}
             </ul>
