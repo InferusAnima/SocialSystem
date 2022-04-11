@@ -5,9 +5,12 @@ from django.contrib.auth.models import User
 
 
 class RegisterForm(UserCreationForm):
-    email = forms.EmailField()
-    first_name = forms.CharField()
-    last_name = forms.CharField()
+    username = forms.CharField(label='Логин')
+    email = forms.EmailField(label='Эл. почта')
+    first_name = forms.CharField(label='Имя')
+    last_name = forms.CharField(label='Фамилия')
+    password1 = forms.CharField(label='Пароль')
+    password2 = forms.CharField(label='Подтверждение пароля')
 
     class Meta:
         model = User

@@ -3,10 +3,10 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <form method="POST" class="form-group">
+<form method="POST" class="form-group">
         {% csrf_token %}
         {{ form|crispy }}
         <p>Нет аккаунта? Создайте <a href="/register">тут</a></p>
-        <button type="submit" class="btn btn-success">Login</button>
+        <button type="submit" class="btn btn-success">Войти</button>
     </form>
 {% endblock %}
