@@ -9,8 +9,8 @@ class RegisterForm(UserCreationForm):
     email = forms.EmailField(label='Эл. почта')
     first_name = forms.CharField(label='Имя')
     last_name = forms.CharField(label='Фамилия')
-    password1 = forms.CharField(label='Пароль')
-    password2 = forms.CharField(label='Подтверждение пароля')
+    password1 = forms.CharField(label='Пароль', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Подтверждение пароля', widget=forms.PasswordInput)
 
     class Meta:
         model = User
