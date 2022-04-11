@@ -5,8 +5,15 @@
 {% block content %}
 <form method="POST" class="form-group">
         {% csrf_token %}
-        {{ form|crispy }}
-        <p>Нет аккаунта? Создайте <a href="/register">тут</a></p>
+        <div class="mb-3">
+            <label for="Username" class="form-label">Логин*</label>
+            <input class="form-control" name="username" id="id_username">
+        </div>
+        <div class="mb-3">
+            <label for="Password" class="form-label">Пароль*</label>
+            <input type="password" class="form-control" name="password" id="id_password">
+            <div id="passwordHelp" class="form-text">Нет аккаунта? Создайте <a href="/register">тут</a></div>
+        </div>
         <button type="submit" class="btn btn-success">Войти</button>
     </form>
 {% endblock %}
